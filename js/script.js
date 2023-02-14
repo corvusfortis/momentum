@@ -25,3 +25,22 @@
     let month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     document.querySelector('.date').innerHTML = day[date.getDay()] + ', ' + month[date.getMonth()] + " " + date.getDate();
 })();
+
+(function greeting(){
+    let timeOfDay = '';
+    let date = new Date();
+    let hours = date.getHours();
+
+    if(hours >= 6 && hours < 12){
+        timeOfDay = 'morning';
+    }else if(hours >= 12 && hours < 18){
+        timeOfDay = 'afternoon';
+    }else if(hours >= 18){
+        timeOfDay = 'evening';
+    }else{
+        timeOfDay = 'night'
+    }
+
+
+    document.querySelector('.greeting').innerHTML = 'Good ' + timeOfDay + ',';
+})()
