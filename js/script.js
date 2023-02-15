@@ -52,7 +52,7 @@
     window.addEventListener('unload', function(){
         localStorage.setItem('name', name.value);
     })
-    window.addEventListener('load', function(){
+    window.addEventListener('DOMContentLoaded', function(){
         name.value = localStorage.getItem('name');
     })
 })();
@@ -86,7 +86,7 @@
 
     window.addEventListener('load', function(){
         num < 10 ? num = '0' + num : num;
-        document.body.style.background = `url("https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${folderName}/${num}.jpg") center/cover, rgba(0, 0, 0, 0.5)`;
+        document.body.style.background = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp") center/cover, rgba(0, 0, 0, 0.5)`;
     });
 
     document.querySelector('.slider-icons').addEventListener('click', function(event){
@@ -107,7 +107,8 @@
 
         num < 10 ? num = '0' + num : num;
         console.log(num);
-        document.body.style.background = `url("https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${folderName}/${num}.jpg") center/cover, rgba(0, 0, 0, 0.5)`;
+        document.body.style.background = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp") center/cover, rgba(0, 0, 0, 0.5)`;
     });
 
 })();
+
