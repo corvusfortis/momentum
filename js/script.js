@@ -86,7 +86,11 @@
 
     window.addEventListener('load', function(){
         num < 10 ? num = '0' + num : num;
-        document.body.style.background = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp") center/cover, rgba(0, 0, 0, 0.5)`;
+        let img = new Image();
+        img.src = `https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp`;
+        img.onload = () => {
+            document.body.style.backgroundImage = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp")`;
+        }
     });
 
     document.querySelector('.slider-icons').addEventListener('click', function(event){
@@ -106,8 +110,11 @@
             }
 
         num < 10 ? num = '0' + num : num;
-        console.log(num);
-        document.body.style.background = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp") center/cover, rgba(0, 0, 0, 0.5)`;
+        let img = new Image();
+        img.src = `https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp`;
+        img.onload = () => {
+            document.body.style.backgroundImage = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp")`;
+        }
     });
 
 })();
