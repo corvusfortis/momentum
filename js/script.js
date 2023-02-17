@@ -1,29 +1,48 @@
-(function clock(){
-    let date = new Date();
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    let seconds = date.getSeconds();
+// (function clock(){
+//     let date = new Date();
+//     let hours = date.getHours();
+//     let minutes = date.getMinutes();
+//     let seconds = date.getSeconds();
 
-    if(hours < 10){
-        hours = '0' + hours;
-    } 
-    if(minutes < 10){
-        minutes = '0' + minutes;
-    } 
-    if(seconds < 10) {
-        seconds = '0' + seconds;
-    }
+//     if(hours < 10){
+//         hours = '0' + hours;
+//     } 
+//     if(minutes < 10){
+//         minutes = '0' + minutes;
+//     } 
+//     if(seconds < 10) {
+//         seconds = '0' + seconds;
+//     }
 
-    document.querySelector('.time').innerHTML = hours + ':' + minutes + ':' + seconds;
-    setTimeout(clock, 1000);
+//     document.querySelector('.time').innerHTML = hours + ':' + minutes + ':' + seconds;
+//     setTimeout(clock, 1000);
+// })();
+
+
+// (function currentDate(){
+//     let date = new Date();
+//     let day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+//     let month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+//     document.querySelector('.date').innerHTML = day[date.getDay()] + ', ' + month[date.getMonth()] + " " + date.getDate();
+//     setTimeout(currentDate, 1000);
+// })();
+
+(function currentTime(){
+        let time = document.querySelector('.time');
+        let date = new Date();
+        time.textContent = date.toLocaleTimeString();
+
+        setTimeout(currentTime, 1000);
+
 })();
 
-
 (function currentDate(){
-    let date = new Date();
-    let day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    let month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    document.querySelector('.date').innerHTML = day[date.getDay()] + ', ' + month[date.getMonth()] + " " + date.getDate();
+    const date = new Date();
+    const options = {month: 'long', weekday: 'long', day: 'numeric', timeZone: 'UTC'};
+    const currentDate = date.toLocaleDateString('en-Br', options);
+    
+    document.querySelector('.date').textContent = currentDate;
+
     setTimeout(currentDate, 1000);
 })();
 
@@ -156,4 +175,25 @@
      })
 
      
+})();
+
+(function quoteApp(){
+    let quote = document.querySelector('.quote');
+    let author = document.querySelector('.author');
+
+    async function getQuotes() {  
+        const quotes = 'js/data.json';
+        const res = await fetch(quotes);
+        const data = await res.json(); 
+        
+        let num = Math.floor(Math.random() * (data.length + 1));
+
+        quote.textContent = data[num].text;
+        author.textContent = data[num].author;
+        
+      }
+      getQuotes();
+
+      document.querySelector('.change-quote').addEventListener('click', getQuotes);
+
 })();

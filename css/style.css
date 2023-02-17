@@ -258,6 +258,7 @@ body {
 
 .quote {
   min-height: 32px;
+  transition: 2s ease-in-out;
 }
 
 .author {
