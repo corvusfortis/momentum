@@ -1,3 +1,6 @@
+
+    import playlist from './playlist.js';
+
 // (function clock(){
 //     let date = new Date();
 //     let hours = date.getHours();
@@ -199,18 +202,44 @@
 })();
 
 (function player(){
+
     const audio = new Audio();
     const playBtn = document.querySelector('.play');
     const playNext = document.querySelector('.play-next');
     const playPrev = document.querySelector('.play-prev');
+    let playNum = 0;
     let isPlay = false;
+    let trackList = document.querySelector('.play-list');
 
-    function playAudio() {
-    audio.src = './assets/sounds/Aqua Caelestis.mp3' // ссылка на аудио-файл;
-    audio.currentTime = 0;
+    for(let i = 0; i < playlist.length; i++){
+        let newLi = trackList.appendChild(document.createElement('li'));
+        newLi.innerHTML = playlist[i].title + ' ' + playlist[i].duration;
+        newLi.classList.add("play-item")
+    }
+
+    function playAudio(event) {
+
+    if(event.target === playNext){
+        playNum++;
+        isPlay = false;
+        playBtn.classList.remove('pause');
+    }else if(event.target === playPrev){
+        playNum--;
+        isPlay = false;
+        playBtn.classList.remove('pause');
+    }
+
+    if(playNum < 0){
+        playNum = playlist.length - 1;
+    }else if(playNum >= playlist.length){
+        playNum = 0;
+    }
+    
     if(isPlay){
         audio.pause();
     }else{
+        audio.src = playlist[playNum].src; // ссылка на аудио-файл;
+        audio.currentTime = 0;
         audio.play();
     }
         isPlay = !isPlay;
@@ -218,6 +247,8 @@
     }
 
     playBtn.addEventListener('click', playAudio);
+    playNext.addEventListener('click', playAudio);
+    playPrev.addEventListener('click', playAudio);
 
 
 })();
