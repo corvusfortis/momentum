@@ -217,6 +217,8 @@
         newLi.classList.add("play-item")
     }
 
+    let playItems = document.querySelectorAll('.play-item');
+
     function playAudio(event) {
 
     if(event.target === playNext){
@@ -238,8 +240,12 @@
     if(isPlay){
         audio.pause();
     }else{
+        for(let item of playItems){
+            item.classList.remove('item-active');
+        }
+        playItems[playNum].classList.add('item-active');
         audio.src = playlist[playNum].src; // ссылка на аудио-файл;
-        audio.currentTime = 0;
+        // audio.currentTime = 0;
         audio.play();
     }
         isPlay = !isPlay;
@@ -249,6 +255,8 @@
     playBtn.addEventListener('click', playAudio);
     playNext.addEventListener('click', playAudio);
     playPrev.addEventListener('click', playAudio);
-
+    audio.addEventListener('ended', function(){
+        playNext.click();
+    })
 
 })();
