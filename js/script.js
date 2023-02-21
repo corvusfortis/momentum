@@ -197,3 +197,27 @@
       document.querySelector('.change-quote').addEventListener('click', getQuotes);
 
 })();
+
+(function player(){
+    const audio = new Audio();
+    const playBtn = document.querySelector('.play');
+    const playNext = document.querySelector('.play-next');
+    const playPrev = document.querySelector('.play-prev');
+    let isPlay = false;
+
+    function playAudio() {
+    audio.src = './assets/sounds/Aqua Caelestis.mp3' // ссылка на аудио-файл;
+    audio.currentTime = 0;
+    if(isPlay){
+        audio.pause();
+    }else{
+        audio.play();
+    }
+        isPlay = !isPlay;
+        playBtn.classList.toggle('pause');
+    }
+
+    playBtn.addEventListener('click', playAudio);
+
+
+})();
