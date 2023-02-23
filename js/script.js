@@ -207,13 +207,21 @@
     const playBtn = document.querySelector('.play');
     const playNext = document.querySelector('.play-next');
     const playPrev = document.querySelector('.play-prev');
+    const audioSlider = document.querySelector('.audio-slider');
+    const totalTime = document.querySelector(".total-time");
+    const currentProgress = document.querySelector('.current-time')
+
     let playNum = 0;
     let isPlay = false;
     let trackList = document.querySelector('.play-list');
+    let timeTemp = 0;
+
+    
 
     for(let i = 0; i < playlist.length; i++){
         let newLi = trackList.appendChild(document.createElement('li'));
-        newLi.innerHTML = playlist[i].title + ' ' + playlist[i].duration;
+        newLi.innerHTML = playlist[i].title;
+        // + ' ' + playlist[i].duration;
         newLi.classList.add("play-item")
     }
 
@@ -225,10 +233,12 @@
         playNum++;
         isPlay = false;
         playBtn.classList.remove('pause');
+        timeTemp = 0;
     }else if(event.target === playPrev){
         playNum--;
         isPlay = false;
         playBtn.classList.remove('pause');
+        timeTemp = 0;
     }
 
     if(playNum < 0){
@@ -239,24 +249,57 @@
     
     if(isPlay){
         audio.pause();
+        timeTemp = audio.currentTime;
     }else{
         for(let item of playItems){
             item.classList.remove('item-active');
         }
         playItems[playNum].classList.add('item-active');
         audio.src = playlist[playNum].src; // ссылка на аудио-файл;
-        // audio.currentTime = 0;
+        document.querySelector('.track-name').textContent = playlist[playNum].title;
+        audio.currentTime = timeTemp;
         audio.play();
+
+        setInterval(updateProgressValue, 500);
+        
     }
         isPlay = !isPlay;
         playBtn.classList.toggle('pause');
     }
+
+    function updateProgressValue() {
+        audioSlider.max = audio.duration;
+        audioSlider.value = audio.currentTime;
+        currentProgress.innerHTML = (formatTime(Math.floor(audio.currentTime)));
+        if (totalTime.innerHTML === "NaN:NaN") {
+            totalTime.innerHTML = "0:00";
+        } else {
+            totalTime.innerHTML = (formatTime(Math.floor(audio.duration)));
+        }
+    };
+
+    function formatTime(seconds) {
+        let min = Math.floor((seconds / 60));
+        let sec = Math.floor(seconds - (min * 60));
+        if (sec < 10){ 
+            sec  = `0${sec}`;
+        };
+        return `${min}:${sec}`;
+    };
+
+    
+
+    function changeProgressBar() {
+        audio.currentTime = audioSlider.value;
+        timeTemp = audio.currentTime;
+    };
 
     playBtn.addEventListener('click', playAudio);
     playNext.addEventListener('click', playAudio);
     playPrev.addEventListener('click', playAudio);
     audio.addEventListener('ended', function(){
         playNext.click();
-    })
+    });
+    audioSlider.addEventListener('change', changeProgressBar);
 
 })();
