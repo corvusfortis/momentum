@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,12 +11,15 @@
 <body>
   <header class="header">
     <div class="player">
-      <div class="current-time">0:00</div>
-      <div class="total-time">0:00</div>
+      <input  class="volume-slider" type="range" min="0" max="100">
+
+
       <div class="player-controls">
+        <div class="current-time">0:00</div>
         <button class="play-prev player-icon"></button>
         <button class="play player-icon"></button>
         <button class="play-next player-icon"></button>
+        <div class="total-time">0:00</div>
       </div>
     <div class="track-name"></div>
       <input type="range" class="audio-slider" value="0" min="0" max="">
@@ -45,8 +48,10 @@
       <span class="greeting"></span>
       <input type="text" class="name" placeholder="Enter Name"/>
     </div>
+    <button class="page-lang">Язык</button>
   </main>
   <footer class="footer">
+    
     <button class="change-quote"></button>
     <div>
       <div class="quote"></div>

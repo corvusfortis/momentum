@@ -30,6 +30,10 @@
 //     setTimeout(currentDate, 1000);
 // })();
 
+
+
+
+
 (function currentTime(){
         let time = document.querySelector('.time');
         let date = new Date();
@@ -42,30 +46,56 @@
 (function currentDate(){
     const date = new Date();
     const options = {month: 'long', weekday: 'long', day: 'numeric', timeZone: 'UTC'};
-    const currentDate = date.toLocaleDateString('en-Br', options);
+    // let currentDate;
+
+    function setDateFormat(language){
+        if(language === 'en'){
+            return date.toLocaleDateString('en-Br', options);
+        }else if (language === 'ru'){
+            return date.toLocaleDateString('ru-RU', options);
+        }
+    }
+       
+
+ 
     
-    document.querySelector('.date').textContent = currentDate;
+    document.querySelector('.date').textContent = setDateFormat(document.querySelector('html').lang);
 
     setTimeout(currentDate, 1000);
 })();
 
-(function greeting(){
+(function greeting(language){
+
+    let translations = {
+        en: ['Good morning', 'Good afternoon', 'Good evening', 'Good night'],
+        ru: ['Доброе утро', 'Добрый день', 'Добрый вечер', 'Доброй ночи']
+    }
+
+    let lang = document.querySelector('html').lang;
+
+    function setGreetLanguage(language, index){
+ 
+        return translations[language][index];
+    }
+
     let timeOfDay = '';
     let date = new Date();
     let hours = date.getHours();
 
+
+
     if(hours >= 6 && hours < 12){
-        timeOfDay = 'morning';
+        timeOfDay = setGreetLanguage(lang, 0);
     }else if(hours >= 12 && hours < 18){
-        timeOfDay = 'afternoon';
-    }else if(hours >= 18){
-        timeOfDay = 'evening';
+        timeOfDay = setGreetLanguage(lang, 1);
+    }else if(hours >= 18 && hours < 23){
+        timeOfDay = setGreetLanguage(lang, 2);
     }else{
-        timeOfDay = 'night'
+        timeOfDay = setGreetLanguage(lang, 3)
     }
 
 
-    document.querySelector('.greeting').innerHTML = 'Good ' + timeOfDay + ',';
+    document.querySelector('.greeting').innerHTML = timeOfDay + ',';
     setTimeout(greeting, 1000);
 })();
 
@@ -82,6 +112,7 @@
 //slider start
 
 (function slider(){
+    //let apiLink =`https://api.unsplash.com/photos/random?orientation=landscape&query=${timeOfDay}&client_id=er_pOxcxGva0a90iDtrOi3SzJH2noI7KeYrQFdyH-HE`;
     let num = Math.floor(Math.random() * (21 - 1)) + 1;
 
 
@@ -89,55 +120,76 @@
     let folderName = '';
     switch(timeOfDay){
         case 'Good morning,':
+        case 'Доброе утро,':
             folderName = 'morning';
             break;
         case 'Good afternoon,':
+        case 'Добрый день,':
             folderName = 'afternoon';
             break;
         case 'Good evening,':
+        case 'Добрый вечер,':
             folderName = 'evening';
             break;
         case 'Good night,':
+        case 'Доброй ночи,':
             folderName = 'night';
             break;
     }
 
-       
+    async function getLinkToImage() {
+        const url = `https://api.unsplash.com/photos/random?orientation=landscape&query=${folderName}&client_id=er_pOxcxGva0a90iDtrOi3SzJH2noI7KeYrQFdyH-HE`;
+        const res = await fetch(url);
+        const data = await res.json();
+        // console.log(data.urls.regular);
+        console.log(data.urls.regular);
 
+        let img = new Image();
+        img.src = data.urls.regular;
+        img.onload = () => {
+            // document.body.style.backgroundImage = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp")`;
+            document.body.style.backgroundImage = `url(${data.urls.regular})`;
+        }
+       }
+
+       window.addEventListener('load', getLinkToImage);
+       document.querySelector('.slider-icons').addEventListener('click', getLinkToImage);
     
+    // window.addEventListener('load', function(){
+    //     num < 10 ? num = '0' + num : num;
+    //     let img = new Image();
+    //     // img.src = `https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp`;
+    //     img.src = getLinkToImage;
+    //     img.onload = () => {
+    //         // document.body.style.backgroundImage = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp")`;
+    //         document.body.style.backgroundImage = `url(${getLinkToImage})`;
+    //     }
+    // });
 
-    window.addEventListener('load', function(){
-        num < 10 ? num = '0' + num : num;
-        let img = new Image();
-        img.src = `https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp`;
-        img.onload = () => {
-            document.body.style.backgroundImage = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp")`;
-        }
-    });
 
-    document.querySelector('.slider-icons').addEventListener('click', function(event){
-            switch(event.target){
-                case document.querySelector('.slide-prev'):
-                    num--;
-                    break;
-                case document.querySelector('.slide-next'):
-                    num++;
-                    break;
-            }
+//     document.querySelector('.slider-icons').addEventListener('click', function(event){
+//             switch(event.target){
+//                 case document.querySelector('.slide-prev'):
+//                     num--;
+//                     break;
+//                 case document.querySelector('.slide-next'):
+//                     num++;
+//                     break;
+//             }
 
-            if(num < 1){
-                num = 20;
-            }else if(num > 20){
-                num = 1;
-            }
+//             if(num < 1){
+//                 num = 20;
+//             }else if(num > 20){
+//                 num = 1;
+//             }
 
-        num < 10 ? num = '0' + num : num;
-        let img = new Image();
-        img.src = `https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp`;
-        img.onload = () => {
-            document.body.style.backgroundImage = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp")`;
-        }
-    });
+//         num < 10 ? num = '0' + num : num;
+//         let img = new Image();
+//         img.src = `https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp`;
+//         img.onload = () => {
+//             document.body.style.backgroundImage = `url("https://raw.githubusercontent.com/corvusfortis/stage1-tasks/assets/images/${folderName}/${num}.webp")`;
+//         }
+//     });
 
 })();
 
@@ -148,9 +200,10 @@
     const wind = document.querySelector('.wind');
     const humidity = document.querySelector('.humidity');
     const city = document.querySelector('.city');
+    
 
-    async function getWeather() {  
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=en&appid=08f2a575dda978b9c539199e54df03b0&units=metric`;
+    async function getWeather(lang) {  
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=${lang}&appid=08f2a575dda978b9c539199e54df03b0&units=metric`;
         const res = await fetch(url);
         const data = await res.json(); 
 
@@ -163,20 +216,21 @@
 
         localStorage.setItem('city', city.value);
       }
-      getWeather()
+      getWeather(document.querySelector('html').lang)
 
      window.addEventListener('DOMContentLoaded', function(){
          city.value = localStorage.getItem('city');
-         getWeather();
+         getWeather(document.querySelector('html').lang);
      });
 
      city.addEventListener('blur', getWeather);
      city.addEventListener('keypress', function(event){
          if(event.key === 'Enter'){
-             getWeather();
+             getWeather(document.querySelector('html').lang);
          }
      })
 
+     setTimeout(weather, 1000);
      
 })();
 
@@ -209,7 +263,8 @@
     const playPrev = document.querySelector('.play-prev');
     const audioSlider = document.querySelector('.audio-slider');
     const totalTime = document.querySelector(".total-time");
-    const currentProgress = document.querySelector('.current-time')
+    const currentProgress = document.querySelector('.current-time');
+    const volumeSlider = document.querySelector('.volume-slider');
 
     let playNum = 0;
     let isPlay = false;
@@ -303,6 +358,10 @@
         timeTemp = audio.currentTime;
     };
 
+    function changeVolume(event){
+        audio.volume = event.target.value / 100;
+    }
+
     playBtn.addEventListener('click', playAudio);
     playNext.addEventListener('click', playAudio);
     playPrev.addEventListener('click', playAudio);
@@ -310,5 +369,25 @@
         playNext.click();
     });
     audioSlider.addEventListener('change', changeProgressBar);
+    volumeSlider.addEventListener('change', changeVolume);
 
 })();
+
+
+(function setLang(){
+    const pageLang = document.querySelector('.page-lang');
+    let currentLang = document.querySelector('html').lang;
+
+    pageLang.addEventListener('click', function(){
+        if(document.querySelector('html').lang === 'en'){
+            document.querySelector('html').lang = 'ru';
+
+        }else if(document.querySelector('html').lang === 'ru'){
+            document.querySelector('html').lang = 'en';
+   
+        }
+    })
+       
+    
+})();
+
