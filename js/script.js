@@ -223,6 +223,7 @@
         newLi.innerHTML = playlist[i].title;
         // + ' ' + playlist[i].duration;
         newLi.classList.add("play-item")
+        newLi.addEventListener('click', playAudio);
     }
 
     let playItems = document.querySelectorAll('.play-item');
@@ -246,6 +247,14 @@
     }else if(playNum >= playlist.length){
         playNum = 0;
     }
+
+    playItems.forEach((item, index) => {
+        if(event.target === item){
+            audio.currentTime = 0;
+            isPlay = false;
+            playNum = index;
+        }
+    })
     
     if(isPlay){
         audio.pause();
